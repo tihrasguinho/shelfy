@@ -7,6 +7,8 @@ class Route {
 
   Route._(this.path, this.method, this.handler) {
     assert(() {
+      if (path == '/') return true;
+
       if (!path.startsWith('/')) {
         throw Exception('$runtimeType Exception: path must start with /');
       }

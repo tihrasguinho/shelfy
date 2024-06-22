@@ -9,6 +9,8 @@ abstract class Controller extends Router {
 
   Controller(this.prefix) {
     assert(() {
+      if (prefix == '/') return true;
+
       if (prefix.isEmpty) {
         throw Exception('$runtimeType Exception: prefix cannot be empty');
       }
