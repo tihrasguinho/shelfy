@@ -26,7 +26,7 @@ class Route {
       true => path.substring(0, path.length - 1),
       false => path,
     };
-    return Route._(normalizedPath, method, handler);
+    return Route._(normalizedPath.replaceAll(RegExp(r'\/{2,}'), '/'), method, handler);
   }
 
   Route copyWith({String? path, Method? method, Function? handler}) {
