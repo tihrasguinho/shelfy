@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:shelf/shelf.dart';
@@ -13,7 +14,7 @@ class Shelfy extends Router {
   late final List<Route> _routes;
   late final List<Middleware> _middlewares;
 
-  Shelfy({String prefix = ''}) {
+  Shelfy({String prefix = '', bool debug = false}) {
     assert(() {
       if (prefix.isNotEmpty && !prefix.startsWith('/')) {
         throw Exception('$runtimeType Exception: prefix must start with /');
@@ -26,7 +27,9 @@ class Shelfy extends Router {
       return true;
     }());
     _prefix = prefix;
-    _routes = [];
+    _routes = [
+      if (debug) Route('/info', Get(), _apiMetadata),
+    ];
     _middlewares = [];
   }
 
@@ -124,5 +127,22 @@ class Shelfy extends Router {
       }
     }
     return params;
+  }
+
+  Response _apiMetadata(Request request) {
+    return Response(
+      200,
+      body: jsonEncode(
+        {
+          'prefix': _prefix,
+          'routes': _routes.asMap().map(
+                (key, value) => MapEntry<String, dynamic>(
+                  key.toString(),
+                  value.path,
+                ),
+              ),
+        },
+      ),
+    );
   }
 }
