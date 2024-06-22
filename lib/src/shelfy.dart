@@ -5,7 +5,6 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as io;
 import 'package:shelfy/src/method.dart';
 
-import 'interfaces/controller.dart';
 import 'interfaces/router.dart';
 import 'route.dart';
 
@@ -32,6 +31,9 @@ class Shelfy extends Router {
   }
 
   @override
+  List<Route> get routes => _routes;
+
+  @override
   void add(String path, Method method, Function handler) {
     return _routes.add(Route('$_prefix$path', method, handler));
   }
@@ -54,10 +56,6 @@ class Shelfy extends Router {
   @override
   void put(String path, Function handler) {
     return add(path, Put(), handler);
-  }
-
-  void controller(Controller controller) {
-    return controller.bind(this);
   }
 
   void middleware(Middleware middleware) {

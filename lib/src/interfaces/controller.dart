@@ -27,6 +27,9 @@ abstract class Controller extends Router {
   }
 
   @override
+  List<Route> get routes => _routes;
+
+  @override
   void add(String path, Method method, Function handler) {
     return _routes.add(Route('$prefix$path', method, handler));
   }
@@ -49,11 +52,5 @@ abstract class Controller extends Router {
   @override
   void delete(String path, Function handler) {
     return add(path, Delete(), handler);
-  }
-
-  void bind(Router router) {
-    for (final route in _routes) {
-      router.add(route.path, route.method, route.handler);
-    }
   }
 }
