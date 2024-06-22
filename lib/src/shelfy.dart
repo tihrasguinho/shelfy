@@ -28,7 +28,7 @@ class Shelfy extends Router {
     }());
     _prefix = prefix;
     _routes = [
-      if (debug) Route('/info', Get(), _apiMetadata),
+      if (debug) Route('$_prefix/info', Get(), _apiMetadata),
     ];
     _middlewares = [];
   }
@@ -143,6 +143,9 @@ class Shelfy extends Router {
               ),
         },
       ),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     );
   }
 }
